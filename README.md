@@ -5,3 +5,9 @@ $value = $cache->get($key, function() {
     return "value";
 });
 ```
+
+
+Unit test
+```
+phpunit --colors --testdox -c test/config.xml
+```

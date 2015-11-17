@@ -44,4 +44,10 @@ class StackCache extends Cache {
 			}
 		}
 	}
+	
+	public function delete($key) {
+		foreach ( $this->cacheArray AS $cache ) {
+			$cache->delete($key);
+		}
+	}
 }

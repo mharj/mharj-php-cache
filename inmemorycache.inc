@@ -14,4 +14,9 @@ class InMemoryCache extends Cache {
 	public function haveValue($key) {
 		return isset($this->data[$key]);
 	}
+	public function delete($key) {
+		if ( $this->haveValue($key) ) {
+			unset($this->data[$key]); 
+		}
+	}
 }

@@ -9,6 +9,7 @@ abstract class Cache {
 	abstract public function setValue($key,$value);
 	abstract public function getValue($key);
 	abstract public function haveValue($key);
+	abstract public function delete($key);
 	
 	public function get($key,callable $function) {
 		if ($this->disabled == true ) {

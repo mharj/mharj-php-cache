@@ -21,6 +21,11 @@ class MemcacheCache extends Cache {
 		$this->memcache->set($key,$value,$this->compress,$this->ttl);
 	}
 	
+	public function delete($key) {
+		$this->memcache->delete($key);
+	}
+	
+	// memcache specific
 	public function setCompress($value) {
 		$this->compress = ($value==true?MEMCACHE_COMPRESSED:0);
 	}
