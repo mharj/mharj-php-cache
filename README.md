@@ -6,7 +6,7 @@ $value = $cache->get($key, function() {
     return "value";
 });
 ```
-Parameters
+Passing data/objects without globals
 ```
 $cache = new xxxCache();
 $value = $cache->get($key, $param1, $param2, ... , function($param1,$param2,...) {
