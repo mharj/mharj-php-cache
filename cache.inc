@@ -38,13 +38,20 @@ abstract class Cache {
 	/**
 	 * Get data from cache else use callback function to get data
 	 * @param string $key
+	 * @param mixed param,param,param,...
 	 * @param callable $function
 	 * @return mixed
 	 */
-	public function get($key,callable $function) {
+	public function get() {
+		$args = func_get_args();
+		$key = array_shift($args); // key
+		$function = array_pop($args); // function
+		if ( ! is_callable($function) ) {
+			throw new \Exception("last parameter is not callable");
+		}
 		if ($this->disabled == true ) {
 			$this->misscount++;
-			return call_user_func($function);
+			return call_user_func_array($function,$args);
 		}
 		if ($this->haveValue($key)) {
 			$this->hit = true;
@@ -53,7 +60,7 @@ abstract class Cache {
 		}
 		$this->misscount++;
 		$this->hit = false;
-		$value = call_user_func($function);
+		$value = call_user_func_array($function,$args);
 		$this->setValue($key,$value);
 		return $value;
 	}
