@@ -57,12 +57,7 @@ abstract class Cache {
 		$this->setValue($key,$value);
 		return $value;
 	}
-	protected function setHit() {
-		$this->hitcount++;
-	}
-	protected function setMiss() {
-		$this->misscount++;
-	}
+
 	/**
 	 * if last get was from cache
 	 * @return boolean
