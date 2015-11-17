@@ -9,8 +9,8 @@ $value = $cache->get($key, function() {
 Parameters
 ```
 $cache = new xxxCache();
-$value = $cache->get($key, $param1, $param2, $param3, ... , function($param1,$param2,$param3,....) {
-    return $param1.$param2.$param3.....
+$value = $cache->get($key, $param1, $param2, ... , function($param1,$param2,...) {
+    return $param1.$param2.$param3...
 });
 ```
 
