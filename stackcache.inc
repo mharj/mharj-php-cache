@@ -13,14 +13,14 @@ class StackCache extends Cache {
 		$this->cacheArray = $cacheArray;
 	}
 	
-	public function setValue($key, $value) {
+	protected function setValue($key, $value) {
 		foreach ( $this->cacheArray AS $cache ) {
 			$cache->setValue($key,$value);
 		}
 		unset($this->keyIndex[$key]); // back to check all caches
 	}
 	
-	public function haveValue($key) {
+	protected function haveValue($key) {
 		foreach ( $this->cacheArray AS $k => $cache ) {
 			if( $cache->haveValue($key) == true ) {
 				$this->keyIndex[$key]=$k;
@@ -30,7 +30,8 @@ class StackCache extends Cache {
 		return false;
 	}
 	
-	public function getValue($key) {
+	protected function getValue($key) {
+		// try to read from last "haveValue==true" index
 		if ( isset($this->cacheArray[$this->keyIndex[$key]]) && $this->cacheArray[$this->keyIndex[$key]]->haveValue($key) == true ) {
 			$value = $this->cacheArray[$this->keyIndex[$key]]->getValue($key);
 			$this->setValue($key,$value); // update all stack caches

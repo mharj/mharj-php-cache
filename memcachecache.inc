@@ -9,15 +9,15 @@ class MemcacheCache extends Cache {
 		$this->memcache = $memcache;
 	}
 	
-	public function getValue($key) {
+	protected function getValue($key) {
 		return $this->memcache->get($key);
 	}
 
-	public function haveValue($key) {
+	protected function haveValue($key) {
 		return ! (empty($this->memcache->get($key)));
 	}
 
-	public function setValue($key, $value) {
+	protected function setValue($key, $value) {
 		$this->memcache->set($key,$value,$this->compress,$this->ttl);
 	}
 	

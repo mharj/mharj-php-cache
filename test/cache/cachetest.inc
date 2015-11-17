@@ -5,6 +5,13 @@ use cache\StackCache;
 use cache\FileCache;
 
 class CacheClassTesting extends PHPUnit_Framework_TestCase {
+	public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+	    $reflection = new \ReflectionClass(get_class($object));
+	    $method = $reflection->getMethod($methodName);
+	    $method->setAccessible(true);
+		return $method->invokeArgs($object, $parameters);
+	}
+
 	public function testInMemoryCache() {
 		global $sourceValue;
 		$sourceValue = 'value';
@@ -15,17 +22,22 @@ class CacheClassTesting extends PHPUnit_Framework_TestCase {
 			return $sourceValue;
 		});
 		$this->assertEquals($cacheValue,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		
+		
+
+		
+		
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
 		unset($cache); //clear
 		$cache = new InMemoryCache();
-		$this->assertEquals($cache->haveValue($sourceKey),false);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
 		$cache->delete($sourceKey);
     }
 	
@@ -41,17 +53,17 @@ class CacheClassTesting extends PHPUnit_Framework_TestCase {
 			return $sourceValue;
 		});
 		$this->assertEquals($cacheValue,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
 		unset($cache); //clear
 		$cache = new MemcacheCache($mem);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
 	}
 	
@@ -77,14 +89,14 @@ class CacheClassTesting extends PHPUnit_Framework_TestCase {
 			return $sourceValue;
 		});
 		$this->assertEquals($cacheValue,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
 		unset($imc);unset($mcc);unset($cache);unset($fc);
 		$imc = new InMemoryCache();
 		$mcc = new MemcacheCache($mem);
@@ -94,15 +106,15 @@ class CacheClassTesting extends PHPUnit_Framework_TestCase {
 			$mcc,
 			$fc
 		));
-		$this->assertEquals($imc->haveValue($sourceKey),false);
-		$this->assertEquals($mcc->haveValue($sourceKey),true);
-		$this->assertEquals($fc->haveValue($sourceKey),true);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals($this->invokeMethod($imc, 'haveValue', array($sourceKey)),false);
+		$this->assertEquals($this->invokeMethod($mcc, 'haveValue', array($sourceKey)),true);
+		$this->assertEquals($this->invokeMethod($fc, 'haveValue', array($sourceKey)),true);
+		$this->assertEquals($this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($imc->haveValue($sourceKey),false);
-		$this->assertEquals($mcc->haveValue($sourceKey),false);
-		$this->assertEquals($fc->haveValue($sourceKey),false);
-		
+		$this->assertEquals($this->invokeMethod($imc, 'haveValue', array($sourceKey)),false);
+		$this->assertEquals($this->invokeMethod($mcc, 'haveValue', array($sourceKey)),false);
+		$this->assertEquals($this->invokeMethod($fc, 'haveValue', array($sourceKey)),false);
+		$this->assertEquals($this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
 	}
 	
 	public function testFileCache() {
@@ -118,17 +130,17 @@ class CacheClassTesting extends PHPUnit_Framework_TestCase {
 			return $sourceValue;
 		});
 		$this->assertEquals($cacheValue,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
-		$this->assertEquals($cache->haveValue($sourceKey),true);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);
 		$cache->delete($sourceKey);
-		$this->assertEquals($cache->haveValue($sourceKey),false);
-		$cache->setValue($sourceKey,$sourceValue);
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,false);
+		$this->invokeMethod($cache, 'setValue', array($sourceKey,$sourceValue));
 		unset($cache); //clear
 		$cache = new FileCache("/tmp/filecache_test");
-		$this->assertEquals($cache->haveValue($sourceKey),true);		
+		$this->assertEquals( $this->invokeMethod($cache, 'haveValue', array($sourceKey)) ,true);		
 		$cache->delete($sourceKey);		
 	}
 }
